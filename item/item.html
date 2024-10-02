@@ -233,8 +233,26 @@
 
 <div class="container mt-5 border" style="background-color: #f8f9fa">
     <h1 class="mb-4">Item Manage</h1>
-    <div class="row">
 
+    <!-- Search Bar and Dropdown -->
+    <div class="row mb-3">
+        <div class="col-lg-4">
+            <input type="text" class="form-control" placeholder="Search items...">
+        </div>
+        <div class="col-lg-4">
+            <select class="form-select" aria-label="Select item category">
+                <option selected>Search by</option>
+                <option value="1">ID</option>
+                <option value="2">Name</option>
+            </select>
+        </div>
+        <div class="col-lg-4">
+            <button class="btn btn-primary">Search</button>
+        </div>
+    </div>
+
+
+    <div class="row">
         <!-- Form Column -->
         <div class="col-lg-4">
             <form class="form">
