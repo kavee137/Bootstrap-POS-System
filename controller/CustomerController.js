@@ -36,7 +36,14 @@ const clearFields = () => {
 
 // Generate new customer ID
 const generateNewCusId = () => {
-    $('#id').val(customer_array.length+1);
+
+    if (customer_array.length === 0) {
+        $('#id').val(customer_array.length+1);
+    } else {
+        // methana karanne customer array eke thiyena anthima object eke id eka aragena eekata ekak ekathu karna eka
+        $('#id').val(customer_array[customer_array.length-1]._id+1);
+    }
+
 }
 
 // Load customer table
