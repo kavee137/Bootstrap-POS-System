@@ -7,10 +7,10 @@ let selected_customer_index = null;
 // Select row in the table
 let selectedRowIndex = '';
 
+let custID = 1;
 
 // generate new customer ID
 $('#id').val(customer_array.length+1);
-
 
 // Regex
 const validateMobile = (mobile) => {
@@ -38,10 +38,12 @@ const clearFields = () => {
 const generateNewCusId = () => {
 
     if (customer_array.length === 0) {
-        $('#id').val(customer_array.length+1);
+        custID = 1;
+        $('#id').val(custID);
     } else {
         // methana karanne customer array eke thiyena anthima object eke id eka aragena eekata ekak ekathu karna eka
-        $('#id').val(customer_array[customer_array.length-1]._id+1);
+        custID = customer_array[customer_array.length-1]._id+1;
+        $('#id').val(custID);
     }
 
 }
@@ -98,7 +100,8 @@ $("#customer_save_btn").on("click", function (event) {
     } else {
 
         let customer = new CustomerModel(
-            customer_array.length + 1,
+            // customer_array.length + 1,
+            custID,
             first_name,
             last_name,
             address,
