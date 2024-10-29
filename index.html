@@ -327,32 +327,39 @@
     <div class="row">
         <!-- Form Column -->
         <div class="col-lg-4">
-            <form class="form">
-                <p class="title">Register </p>
-                <p class="message">Enter item details</p>
-                <label>
-                    <input id="txtItemID" class="input" type="number" placeholder="" required="">
-                    <span>ID</span>
-                </label>
-                <label>
-                    <input id="txtItemName" class="input" type="text" placeholder="" required="">
-                    <span>Name</span>
-                </label>
-                <label>
-                    <input id="txtItemUnitPrice" class="input" type="text" placeholder="" required="">
-                    <span>Unit price</span>
-                </label>
-                <label>
-                    <input id="txtItemQtyOnHand" class="input" type="tel" placeholder="" required="">
-                    <span>QTY on hand</span>
-                </label>
-                <div class="d-grid gap-2 d-md-block">
-                    <button id="btnItemClear" class="btn btn-outline-secondary" type="button">clear</button>
-                    <button id="btnItemDelete" class="btn btn-outline-danger" type="button">delete</button>
-                    <button id="btnItemUpdate" class="btn btn-outline-warning" type="button">update</button>
-                    <button id="btnItemSave" class="btn btn-outline-success" type="button">save</button>
+            <div class="card my-4">
+                <div class="card-header">Enter Item Details</div>
+                <div class="card-body">
+                    <form id="itemForm">
+                        <div class="col">
+                            <label for="itemId" class="form-label">ID</label>
+                            <input id="itemId" type="text" class="form-control-plaintext p-0" readonly>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="itemName" class="form-label">Name</label>
+                                <input id="itemName" type="text" class="form-control" placeholder="name" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="itemUnitPrice" class="form-label">Unit price</label>
+                                <input id="itemUnitPrice" type="text" class="form-control" placeholder="unit price" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemQtyOnHand" class="form-label">QTY on hand</label>
+                            <input id="itemQtyOnHand" type="text" class="form-control" placeholder="qty on hand" required>
+                        </div>
+                        <div class="d-grid gap-2 d-md-block">
+                            <button id="item_clear_btn" class="btn btn-outline-secondary" type="button">clear</button>
+                            <button id="item_delete_btn" class="btn btn-outline-danger" type="button">delete</button>
+                            <button id="item_update_btn" class="btn btn-outline-warning" type="button">update</button>
+                            <button id="item_save_btn" class="btn btn-outline-success" type="button">save</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
 
         <!-- Table Column -->
@@ -709,6 +716,9 @@
 
 <!--Customer controller JS-->
 <script type="module" src="controller/CustomerController.js"></script>
+
+<!--Item controller JS-->
+<script type="module" src="controller/ItemController.js"></script>
 
 
 <script src="js/item.js"></script>
