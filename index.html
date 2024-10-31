@@ -397,8 +397,8 @@
                     <!-- Order ID and Date in one row -->
                     <div class="row g-2 mb-2">
                         <div class="col">
-                            <label for="orderID" class="form-label">Order ID</label>
-                            <input type="text" class="form-control" id="oID" placeholder="Order ID">
+                            <label for="oID" class="form-label">Order ID</label>
+                            <input type="text" class="form-control form-control-plaintext" id="oID" placeholder="Order ID" required readonly>
                         </div>
                         <div class="col">
                             <label for="date" class="form-label">Date</label>
@@ -416,7 +416,7 @@
                         </div>
                         <div class="col">
                             <label for="customerName" class="form-label">Customer Name</label>
-                            <input type="text" class="form-control" id="orderCustomerName" placeholder="Customer Name">
+                            <input type="text" class="form-control " id="orderCustomerName" required readonly>
                         </div>
                     </div>
 
@@ -424,14 +424,14 @@
                     <div class="row g-2 mb-2">
                         <div class="col">
                             <label for="address" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="orderCustomerAddress" placeholder="Customer Address">
+                            <input type="text" class="form-control" id="orderCustomerAddress" required readonly>
                         </div>
                     </div>
 
                     <div class="row g-2 mb-2">
                         <div class="col">
                             <label for="orderCustomerTel" class="form-label">Telephone Number</label>
-                            <input type="tel" class="form-control" id="orderCustomerTel" placeholder="Tel">
+                            <input type="tel" class="form-control" id="orderCustomerTel" required readonly>
                         </div>
                     </div>
 
@@ -511,20 +511,21 @@
                 <div class="card-body p-2">
                     <!-- Total Price -->
                     <div id="totalPriceDiv" class="mb-2">
-                        <h5 class="m-0">Total :</h5>
+                        <h5 class="m-0" id="orderSummeryTotal">Total :</h5>
+                        <input type="text" class="form-control form-control-plaintext fs-5" id="orderSummeryTotalLbl" readonly>
                         <h4 class="m-0"></h4>
                     </div>
 
-                    <!-- Sub Total Price -->
-                    <div id="subTotalPriceDiv" class="mb-4">
-                        <h5 class="m-0">Sub Total :</h5>
-                        <h4 class="m-0"></h4>
-                    </div>
+<!--                    &lt;!&ndash; Sub Total Price &ndash;&gt;-->
+<!--                    <div id="subTotalPriceDiv" class="mb-4">-->
+<!--                        <h5 class="m-0">Sub Total :</h5>-->
+<!--                        <h4 class="m-0"></h4>-->
+<!--                    </div>-->
 
                     <!-- Cash Input -->
                     <div class="mb-2">
                         <label for="cash" class="form-label">Cash</label>
-                        <input type="text" class="form-control form-control-sm" id="cash" placeholder="Cash Amount">
+                        <input type="text" class="form-control form-control-sm" id="cash" placeholder="Cash Amount" oninput="calculateBalance()" required>
                     </div>
 
 <!--                    &lt;!&ndash; Discount Input &ndash;&gt;-->
@@ -541,7 +542,7 @@
 
                     <!-- Place Order Button -->
                     <div>
-                        <button type="button" class="btn btn-success btn-sm w-100" data-bs-toggle="modal" data-bs-target="#place-order-modal">
+                        <button type="button" id="btnPlaceOrder" class="btn btn-success btn-sm w-100" data-bs-toggle="modal" data-bs-target="#place-order-modal">
                             Place Order
                         </button>
                     </div>
@@ -556,7 +557,7 @@
         <tr>
             <th scope="col">Item Code</th>
             <th scope="col">Item Name</th>
-            <th scope="col">Price (Rs)</th>
+            <th scope="col">Unit price (Rs)</th>
             <th scope="col">Quantity</th>
             <th scope="col">Total Price</th>
             <th scope="col">Action</th>

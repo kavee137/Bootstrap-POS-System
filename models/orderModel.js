@@ -1,11 +1,12 @@
 export default class OrderModel{
-    constructor(oid , cid , iid , qty , unitprice , tot) {
+    constructor(oid, cid, date, items = [], cash, balance, total) {
         this._oid = oid;
         this._cid = cid;
-        this._iid = iid;
-        this._qty = qty;
-        this._unitprice = unitprice;
-        this._tot = tot;
+        this._date = date;
+        this._items = items;
+        this._cash = cash;
+        this._balance = balance;
+        this._total = total;
     }
 
     get oid() {
@@ -24,35 +25,43 @@ export default class OrderModel{
         this._cid = value;
     }
 
-    get iid() {
-        return this._iid;
+    get date() {
+        return this._date;
     }
 
-    set iid(value) {
-        this._iid = value;
+    set date(value) {
+        this._date = value;
     }
 
-    get qty() {
-        return this._qty;
+    get items() {
+        return this._items;
     }
 
-    set qty(value) {
-        this._qty = value;
+    set items(value) {
+        this._items = value;
     }
 
-    get unitprice() {
-        return this._unitprice;
+    get cash() {
+        return this._cash;
     }
 
-    set unitprice(value) {
-        this._unitprice = value;
+    set cash(value) {
+        this._cash = value;
     }
 
-    get tot() {
-        return this._tot;
+    get balance() {
+        return this._balance;
     }
 
-    set tot(value) {
-        this._tot = value;
+    set balance(value) {
+        this._balance = value;
+    }
+
+    get total() {
+        return this._total;
+    }
+
+    set total(value) {
+        this._total = value;
     }
 }

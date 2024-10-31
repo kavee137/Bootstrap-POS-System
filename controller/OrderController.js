@@ -66,7 +66,7 @@ export function calculateTotal() {
 }
 
 
-
+let orderTotal= 0;
 $("#btnAddToCart").on("click", function (event) {
     event.preventDefault();
 
@@ -75,14 +75,17 @@ $("#btnAddToCart").on("click", function (event) {
     let qty = $('#orderQty').val();
     let unitPrice = $('#OrderItemUnitPrice').val();
     let total = $('#orderTotal').val();
+    let qtyOnHand = $('#OrderItemQtyOnHand').val();
 
-    if (qty.length === 0 || unitPrice.length === 0) {
+    if (qty.length === 0 || unitPrice.length === 0 || qty > qtyOnHand || qty <= 0) {
         Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Please select item or enter item qty!",
         });
     } else {
+
+        orderTotal += +total;
 
         let cartItem = new CartModel(
             itemId,
@@ -94,10 +97,26 @@ $("#btnAddToCart").on("click", function (event) {
 
         cart_array.push(cartItem);
         loadCartTable();
+        clearItemFields();
+
+        // $("#orderSummeryTotalLbl").clear();
+        $("#orderSummeryTotalLbl").val(orderTotal);
 
     }
 
 })
+
+const clearItemFields = () => {
+    $("#itemIdSelector").val('');
+    $("#OrderItemName").val('');
+    $("#OrderItemQtyOnHand").val('');
+    $("#OrderItemUnitPrice").val('');
+    $("#orderQty").val('');
+    $("#orderTotal").val('');
+};
+
+
+
 
 
 const loadCartTable = () => {
@@ -106,11 +125,42 @@ const loadCartTable = () => {
         console.log(item);
         // let data = `<tr><td>${item.id}</td><td>${item.first_name}</td><td>${item.last_name}</td><td>${item.address}</td><td>${item.mobile}</td></tr>`
 
-        let data = `<tr><td>${item._itemId}</td><td>${item._itemName}</td><td>${item._itemUnitPrice}</td><td>${item._qty}</td><td>${item._total}</td><td><button className="btn btn-danger btn-sm">Remove</button></td></tr>`
-
+        let data = `<tr><td>${item._itemId}</td><td>${item._itemName}</td><td>${item._unitPrice}</td><td>${item._qty}</td><td>${item._total}</td><td><button className="btn btn-danger btn-sm">Remove</button></td></tr>`
 
         $("#cartTableBody").append(data);
     })
+}
+
+$(document).ready(function() {
+    // Event listener for the cash input field
+    $('#cash').on('input', function() {
+        const total = parseFloat($('#orderSummeryTotalLbl').val()) || 0;
+        const cash = parseFloat($(this).val()) || 0;
+        const balance = cash - total;
+
+        // Display the balance
+        $('#balance').val(balance >= 0 ? balance.toFixed(2) : '0.00');
+    });
+});
+
+
+
+
+let oId = -1;
+
+// generate new order ID
+$('#oID').val(order_array.length+1);
+
+
+// Generate new order ID
+const generateNewOrderId = () => {
+    if (order_array.length === 0) {
+        oId = 1;
+        $('#id').val(oId);
+    } else {
+        oId = order_array.length+1;
+        $('#oID').val(oId);
+    }
 }
 
 
@@ -118,6 +168,48 @@ const loadCartTable = () => {
 
 
 
+$("#btnPlaceOrder").on("click", function (event) {
+
+
+
+    if (cart_array.length<=0) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Please add at least one item to cart!",
+        });
+    } else {
+
+        let orderId = $('#oID').val();
+        let date = $('#date').val();
+        let cusId = $('#customerIdSelector').val();
+        let cartArray = cart_array;
+        let cash = $('#cash').val();
+        let balance = $('#balance').val();
+        let total = $('#balance').val();
+
+        let placedOrder = new OrderModel(
+            orderId,
+            date,
+            cusId,
+            cartArray,
+            cash,
+            balance,
+            total
+        )
+
+        order_array.push(placedOrder);
+        $("#cartTableBody").empty();
+        clearItemFields();
+        console.log(placedOrder);
+        generateNewOrderId()
+
+    }
+
+
+
+
+})
 
 
 
