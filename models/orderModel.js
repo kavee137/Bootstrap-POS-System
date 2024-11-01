@@ -1,28 +1,29 @@
 export default class OrderModel{
-    constructor(oid, cid, date, items = [], cash, balance, total) {
-        this._oid = oid;
-        this._cid = cid;
+    constructor(orderId, cusId, date, cart, cash, balance, total) {
+        this._orderId = orderId;
+        this._cusId = cusId;
         this._date = date;
-        this._items = items;
+        this._cart = cart;
         this._cash = cash;
         this._balance = balance;
         this._total = total;
     }
 
-    get oid() {
-        return this._oid;
+
+    get orderId() {
+        return this._orderId;
     }
 
-    set oid(value) {
-        this._oid = value;
+    set orderId(value) {
+        this._orderId = value;
     }
 
-    get cid() {
-        return this._cid;
+    get cusId() {
+        return this._cusId;
     }
 
-    set cid(value) {
-        this._cid = value;
+    set cusId(value) {
+        this._cusId = value;
     }
 
     get date() {
@@ -33,12 +34,12 @@ export default class OrderModel{
         this._date = value;
     }
 
-    get items() {
-        return this._items;
+    get cart() {
+        return this._cart;
     }
 
-    set items(value) {
-        this._items = value;
+    set cart(value) {
+        this._cart = value;
     }
 
     get cash() {

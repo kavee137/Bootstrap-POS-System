@@ -2,6 +2,10 @@ import OrderModel from "../models/orderModel.js";
 import CartModel from "../models/cartModel.js";
 import { customer_array, item_array, cart_array, order_array } from "../db/database.js";
 
+
+let unitPrice = 0;
+
+
 $(document).ready(function () {
     $("#order-nav").on("click", function (event) {
         console.log("orderNav clicked");
@@ -31,6 +35,21 @@ const loadItemSelect = () => {
     });
 };
 
+// generate new order ID
+$('#oID').val(order_array.length+1);
+
+// Generate new order ID
+const generateNewOrderId = () => {
+    if (order_array.length === 0) {
+        oId = 1;
+        $('#id').val(oId);
+    } else {
+        oId = order_array.length+1;
+        $('#oID').val(oId);
+    }
+}
+
+
 $("#customerIdSelector").on("change", function (event) {
     event.preventDefault();
     let index = $(this).prop('selectedIndex');
@@ -40,8 +59,6 @@ $("#customerIdSelector").on("change", function (event) {
         $("#orderCustomerTel").val(customer_array[index - 1]._mobile);  // Ensure correct index
     }
 });
-
-let unitPrice = 0;
 
 $("#itemIdSelector").on("change", function (event) {
     event.preventDefault();
@@ -54,16 +71,24 @@ $("#itemIdSelector").on("change", function (event) {
     }
 });
 
-export function calculateTotal() {
-    console.log("calculate fuction")
-    const qty = document.getElementById('orderQty').value;
+// generate total when enter item qty
+$("#orderQty").on("input", function () {
+    const quantity = parseFloat($(this).val()) || 0;
+    const total = unitPrice * quantity;
+    $("#orderTotal").val(total.toFixed(2));
+});
 
-    // Calculate the total
-    const total = qty * unitPrice;
+$(document).ready(function() {
+    // Event listener for the cash input field
+    $('#cash').on('input', function() {
+        const total = parseFloat($('#orderSummeryTotalLbl').val()) || 0;
+        const cash = parseFloat($(this).val()) || 0;
+        const balance = cash - total;
 
-    // Set the total value to the 'orderTotal' input field
-    document.getElementById('orderTotal').value = total ? total.toFixed(2) : '';
-}
+        // Display the balance
+        $('#balance').val(balance >= 0 ? balance.toFixed(2) : '0.00');
+    });
+});
 
 
 let orderTotal= 0;
@@ -98,6 +123,7 @@ $("#btnAddToCart").on("click", function (event) {
         cart_array.push(cartItem);
         loadCartTable();
         clearItemFields();
+        console.log(cart_array);
 
         // $("#orderSummeryTotalLbl").clear();
         $("#orderSummeryTotalLbl").val(orderTotal);
@@ -114,9 +140,19 @@ const clearItemFields = () => {
     $("#orderQty").val('');
     $("#orderTotal").val('');
 };
-
-
-
+const clearBillingFields = () => {
+    $("#oID").val('');
+    $("#date").val('');
+    $("#customerIdSelector").val('');
+    $("#orderCustomerName").val('');
+    $("#orderCustomerAddress").val('');
+    $("#orderCustomerTel").val('');
+};
+const clearSummery = () => {
+    $('#cash').val('');
+    $('#balance').val('');
+    $('#orderSummeryTotalLbl').val('');
+};
 
 
 const loadCartTable = () => {
@@ -131,91 +167,54 @@ const loadCartTable = () => {
     })
 }
 
-$(document).ready(function() {
-    // Event listener for the cash input field
-    $('#cash').on('input', function() {
-        const total = parseFloat($('#orderSummeryTotalLbl').val()) || 0;
-        const cash = parseFloat($(this).val()) || 0;
-        const balance = cash - total;
-
-        // Display the balance
-        $('#balance').val(balance >= 0 ? balance.toFixed(2) : '0.00');
-    });
-});
-
-
-
-
 let oId = -1;
 
-// generate new order ID
-$('#oID').val(order_array.length+1);
-
-
-// Generate new order ID
-const generateNewOrderId = () => {
-    if (order_array.length === 0) {
-        oId = 1;
-        $('#id').val(oId);
-    } else {
-        oId = order_array.length+1;
-        $('#oID').val(oId);
-    }
-}
-
-
-
-
-
-
 $("#btnPlaceOrder").on("click", function (event) {
+    event.preventDefault();
 
-
-
-    if (cart_array.length<=0) {
+    if (cart_array.length <= 0) {
         Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Please add at least one item to cart!",
         });
     } else {
-
         let orderId = $('#oID').val();
         let date = $('#date').val();
         let cusId = $('#customerIdSelector').val();
-        let cartArray = cart_array;
         let cash = $('#cash').val();
         let balance = $('#balance').val();
-        let total = $('#balance').val();
+        let total = $('#orderSummeryTotalLbl').val();
+
+        // Create a deep copy of cart_array
+        let cart = cart_array.map(item => ({ ...item }));
+
+        // Check if any values are undefined, which might indicate missing elements or invalid IDs
+        if (!orderId || !date || !cusId || !cash || !balance || !total) {
+            console.error("One or more required fields are missing or undefined.");
+            return;
+        }
 
         let placedOrder = new OrderModel(
             orderId,
-            date,
             cusId,
-            cartArray,
+            date,
+            cart,  // Use the deep copy here
             cash,
             balance,
             total
-        )
+        );
 
         order_array.push(placedOrder);
         $("#cartTableBody").empty();
+        console.log(order_array);
+
+        // Clear the cart_array without affecting placedOrder
+        cart_array.splice(0, cart_array.length);
         clearItemFields();
-        console.log(placedOrder);
-        generateNewOrderId()
+        clearBillingFields();
+        generateNewOrderId();
+        clearSummery();
 
     }
-
-
-
-
-})
-
-
-
-
-
-
-
-
-
+});
