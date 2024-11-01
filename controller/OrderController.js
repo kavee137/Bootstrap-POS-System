@@ -216,5 +216,13 @@ $("#btnPlaceOrder").on("click", function (event) {
         generateNewOrderId();
         clearSummery();
 
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Order has been placed",
+            showConfirmButton: false,
+            timer: 1500
+        });
+
     }
 });
